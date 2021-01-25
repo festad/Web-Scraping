@@ -2,7 +2,7 @@ import re
 import sys
 import os
 from pathlib import Path
-from dlding import get_soup, download_list_files
+from downloader import get_soup, download_list_files
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -39,13 +39,13 @@ def download_hentai(code):
     
 def download_list_hentai(codes):
     for code in codes:
-        if f'hentai_{code}' in os.listdir():
+        if f'hentai-{code}' in os.listdir():
             print(f'Hentai {code} already present!')
-            continue
-        os.makedirs(f'hentai-{code}')
-        os.chdir(f'hentai-{code}')
-        download_hentai(code)
-        os.chdir('..')
+        else:
+            os.makedirs(f'hentai-{code}')
+            os.chdir(f'hentai-{code}')
+            download_hentai(code)
+            os.chdir('..')
 
 
 if __name__ == '__main__':

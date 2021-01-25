@@ -25,7 +25,7 @@ def download_hentai(code):
             pages = int(re.search('[0-9]+', d.text).group(0))
     pages_urls = []
     pages_names = []
-    driver_exe = '/home/denizow/webdrivers/chromedriver_linux64/chromedriver'
+    driver_exe = '/home/insert-your-own-path/webdrivers/chromedriver_linux64/chromedriver'
     driver = webdriver.Chrome(driver_exe)
     for page in range(pages):
         driver.get(f'https://nhentai.net/g/{code}/{page+1}/')

@@ -52,5 +52,6 @@ if __name__ == '__main__':
     path_check()
     if len(sys.argv) < 2:
         print('Insert the hentai(s) code(s)')
+        print('I strongly advise you not to use the code 177013')
         sys.exit()
     download_list_hentai(sys.argv[1:])

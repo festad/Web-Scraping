@@ -4,6 +4,11 @@ import re
 import json
 import time
 
+
+def get_soup(url):
+    return BeautifulSoup(requests.get(url).text, features='lxml')
+
+
 def download_file(url, name):
     r = requests.get(url, stream=True)
     with open(name, 'wb') as f:

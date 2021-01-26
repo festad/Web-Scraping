@@ -28,7 +28,7 @@ def download_manga(hashcode, name):
     if f'{name}' not in os.listdir():
         os.makedirs(f'{name}')
     os.chdir(f'{name}')
-    driver_exe = '/home/denizow/webdrivers/chromedriver_linux64/chromedriver'
+    driver_exe = '/home/denizu/webdrivers/chromedriver_linux64/chromedriver'
     counter = 1
     for url in urls:
         driver = webdriver.Chrome(driver_exe)

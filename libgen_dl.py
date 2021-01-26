@@ -14,7 +14,7 @@ def path_check():
     os.chdir('Libgen')
 
 
-def download_manga(hashcode, name):
+def download_manga(hashcode, name, t=10):
     url = f'http://libgen.lc/comics/seriestable.php?series_hash={hashcode}'
     soup = get_soup(url)
     urls = []
@@ -25,16 +25,19 @@ def download_manga(hashcode, name):
             urls.append(f"http://libgen.lc/comics/{atag['href']}")
             names.append(f'{name}-{counter}')
             counter += 1
-    if f'{name}' not in os.listdir():
-        os.makedirs(f'{name}')
-    os.chdir(f'{name}')
-    driver_exe = '/home/denizu/webdrivers/chromedriver_linux64/chromedriver'
+    if name not in os.listdir():
+        os.makedirs(name)
+    # os.chdir(f'{name}')
+    driver_exe = str(Path.home()/Path('chromedriver_linux64', 'chromedriver'))
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('prefs', {'download.default_directory': str(Path.home() / Path('Libgen', name))})
+    
     counter = 1
     for url in urls:
-        driver = webdriver.Chrome(driver_exe)
+        driver = webdriver.Chrome(driver_exe, options=options)
         print(f'{url} ==> {counter}')
         driver.get(url)
-        time.sleep(100)
+        time.sleep(int(t))
         counter += 1
     # download_list_files(urls, names)
     os.chdir('..')
@@ -43,6 +46,9 @@ def download_manga(hashcode, name):
 if __name__ == '__main__':
     path_check()
     if len(sys.argv) < 3:
-        print('Insert the manga hashcode first and then the name as arguments')
+        print('Insert the manga hashcode, the name and the expected number of seconds')
+        print('    to download a single file as arguments')
+        print('ex: 3ed9638c0b9e53ece2c4d651a73e504f highschool-dxd 100')
         sys.exit()
-    download_manga(sys.argv[1], sys.argv[2])
+    if len(sys.argv) == 4:
+        download_manga(sys.argv[1], sys.argv[2], sys.argv[3])

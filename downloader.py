@@ -3,10 +3,22 @@ from bs4 import BeautifulSoup
 import re
 import json
 import time
-
+from pathlib import Path
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 def get_soup(url):
     return BeautifulSoup(requests.get(url).text, features='lxml')
+    
+    
+def get_chrome_driver(headless=False):
+    chrome_options = Options()
+    if headless:
+        chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    driver_exe = str(Path.home()/Path('webdrivers', 'chromedriver'))
+    driver = webdriver.Chrome(driver_exe, options=chrome_options)
+    return driver
 
 
 def download_file(url, name):

@@ -2,11 +2,13 @@ import re
 import sys
 import os
 from pathlib import Path
-from downloader import get_soup, download_list_files
-from selenium import webdriver
+from downloader import get_soup, download_list_files, get_chrome_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+
+driver = get_chrome_driver(headless=True)
 
 
 def path_check():
@@ -33,8 +35,6 @@ def download_hentai(argument):
         k = pages
     pages_urls = []
     pages_names = []
-    driver_exe = str(Path.home()/Path('chromedriver_linux64', 'chromedriver'))
-    driver = webdriver.Chrome(driver_exe)
     for page in range(j,k):
         driver.get(f'https://nhentai.net/g/{code}/{page+1}/')
         img_tags = WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'img')))
@@ -42,6 +42,7 @@ def download_hentai(argument):
             if 'galleries' in it.get_attribute('src'):
                 pages_urls.append(it.get_attribute('src'))
                 pages_names.append(f'{code}-{page+1}.jpg')
+                print(f'retrieving {pages_names[-1]}')
     download_list_files(pages_urls, pages_names)
     
     
@@ -53,6 +54,7 @@ def download_list_hentai(arguments):
         os.chdir(f'hentai-{code}')
         download_hentai(arg)
         os.chdir('..')
+    driver.quit()
 
 
 if __name__ == '__main__':

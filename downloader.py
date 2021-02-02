@@ -16,6 +16,7 @@ def get_chrome_driver(headless=False):
     if headless:
         chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-popup-blocking')
     driver_exe = str(Path.home()/Path('webdrivers', 'chromedriver'))
     driver = webdriver.Chrome(driver_exe, options=chrome_options)
     return driver

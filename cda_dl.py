@@ -1,12 +1,18 @@
+import argparse
 from downloader import get_soup, download_list_files, get_chrome_driver
-from pathlib import Path
-import os
-import sys
-import re
 from hashlib import sha256
+import os
+from pathlib import Path
+import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sys
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('link', nargs='+', help='link to the folder on www.cda.pl')
+args = parser.parse_args()
 
 
 p = re.compile(r'folder/[0-9]+')
@@ -22,14 +28,15 @@ def path_check():
 	os.chdir('Cda')
 
 
-def download_list_folders(list_folders, list_names):
+def download_list_folders(list_folders):
 	for k in range(len(list_folders)):
 		print(f'handling folder -> {list_folders[k]}')
-		download_folder(list_folders[k], list_names[k])
+		download_folder(list_folders[k])
 		
 
-def download_folder(folder, name):
-	# folder_code = sha256(folder.encode('utf-8')).hexdigest()
+def download_folder(folder):
+	folder_code = sha256(folder.encode('utf-8')).hexdigest()
+	name = folder_code
 	if name not in os.listdir():
 		os.makedirs(name)
 	os.chdir(name)
@@ -70,7 +77,4 @@ def strip_code_from_url(folder):
 	
 if __name__ == '__main__':
 	path_check()
-	if len(sys.argv) < 2:
-		print('Insert cda folder link as an argument')
-		sys.exit()
-	download_list_folders(sys.argv[1::2], sys.argv[2::2])
+	download_list_folders(args.link)

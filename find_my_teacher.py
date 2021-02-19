@@ -1,13 +1,19 @@
-import sys
-from pathlib import Path
-import requests
+import argparse
 from bs4 import BeautifulSoup
 from downloader import get_chrome_driver
+from pathlib import Path
+import requests
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+import sys
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-n', '--name', help='name of the lecturer (case sensitive)')
+args = parser.parse_args()
 
 
 driver = get_chrome_driver(headless=True)
@@ -46,12 +52,10 @@ def find_lectures_of_year(year, teacher):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print('Insert (at least part of) the name of the teacher you are looking for')
-        print("Otherwise you get all the teachers' timetable")
+    if args.name == None:
         find_lectures('')
     else:
-        find_lectures(sys.argv[1])
+        find_lectures(args.name)
 
 
 if __name__ == '__main__':

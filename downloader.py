@@ -15,8 +15,8 @@ def get_chrome_driver(headless=False):
     chrome_options = Options()
     if headless:
         chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-popup-blocking')
+    # chrome_options.add_argument('--no-sandbox')
+    # chrome_options.add_argument('--disable-popup-blocking')
     driver_exe = str(Path.home()/Path('webdrivers', 'chromedriver'))
     driver = webdriver.Chrome(driver_exe, options=chrome_options)
     return driver
@@ -34,13 +34,15 @@ def download_list_files(urls, names):
     while i < len(urls):
         print(f'Downloading {urls[i]} ==> {names[i]}')
         print(f'[{i + 1}/{len(urls)}]')
-        try:
-            download_file(urls[i], names[i])
-        except:
-            print(f'Error on {urls[i]} ==> {names[i]}')
-            log_file = open('log', 'a')
-            log_file.write(f'{urls[i]} ==> {names[i]}\n')
-            log_file.close()
-            i = i-1
-            time.sleep(10)
+        download_file(urls[i], names[i])
         i = i+1
+        #try:
+            #download_file(urls[i], names[i])
+        #except:
+            #print(f'Error on {urls[i]} ==> {names[i]}')
+            #log_file = open('log', 'a')
+            #log_file.write(f'{urls[i]} ==> {names[i]}\n')
+            #log_file.close()
+            #i = i-1
+            #time.sleep(10)
+        #i = i+1

@@ -22,6 +22,15 @@ def get_chrome_driver(headless=False):
     return driver
 
 
+def get_firefox_driver(headless=False):
+	firefox_options = webdriver.FirefoxOptions()
+	if headless:
+		firefox_options.add_argument('--headless')
+	driver_exe = str(Path.home()/Path('webdrivers', 'geckodriver'))
+	driver = webdriver.Firefox(driver_exe, options=firefox_options)
+	return driver
+
+
 def download_file(url, name):
     r = requests.get(url, stream=True)
     with open(name, 'wb') as f:

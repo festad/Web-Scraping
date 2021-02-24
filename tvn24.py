@@ -1,8 +1,8 @@
-from downloader import get_chrome_driver, get_soup
+from downloader import get_chrome_driver, get_firefox_driver, get_soup
 from bs4 import BeautifulSoup
 
 
-driver = get_chrome_driver(headless=True)
+driver = get_firefox_driver(headless=True)
 
 
 link = 'https://tvn24.pl/polska/'
@@ -10,39 +10,32 @@ link = 'https://tvn24.pl/polska/'
 
 class TopNews():
 	def __init__(self, npages=2):
-		self.outer_dates_tags  = []
+		#self.outer_dates_tags  = []
+		
 		self.outer_titles_links_tags = []
 		self.pre_articles = []
+		
 		#self.outer_links_tags  = []
 		for p in range(npages):
 			driver.get(f'{link}{p+1}')
-			#dates_tags  = driver.find_elements_by_xpath(\
-			#	"//div[@class='teaser-wrapper']/" + \
-			#	"div[@class='article-labels-row']/" + \
-			#	"div/div[@class='label-date']")
+			
 			titles_links_tags = driver.find_elements_by_xpath(\
 				"//div[@class='teaser-wrapper']/" + \
 				"article/div[@class='link']/" + \
 				"div[@class='link__content']/a")
-			#links_tags  = driver.find_elements_by_xpath(\
-			#	"//div[@class='teaser-wrapper']/" + \
-			#	"article/div[@class='link']/" + \
-			#	"div[@class='link__content']/a")
-			#self.outer_dates_tags.append(dates_tags)
 			
-			self.outer_titles_links_tags.append(titles_links_tags)
-			self.pre_articles.append(PreArticle(\
-				titles_links_tags[i].get_attribute('title')[11:],\
-				titles_links_tags[i].get_attribute('href')\
-				)\
-			)
-			
-			#self.outer_links_tags.append(links_tags)
 			for i in range(len(titles_links_tags)):
-				print(\
-					#f"{dates_tags[i].text}\n" + \
+				print( \
 					f"{titles_links_tags[i].get_attribute('title')[11:]}\n" + \
-					f"{titles_links_tags[i].get_attribute('href')}\n\n")
+					#f"{titles_links_tags[i].get_attribute('href')}\n\n"
+				)
+				self.outer_titles_links_tags.append(titles_links_tags[i])
+				
+				self.pre_articles.append(PreArticle( \
+					titles_links_tags[i].get_attribute('title')[11:], \
+					titles_links_tags[i].get_attribute('href')
+					)
+				)
 					
 # TODO:
 #	class PreArticle -> title, link -> ...
@@ -71,13 +64,13 @@ class ArticleScraper():
 		for p in self.paragraphs:
 			if p.get_attribute('class') == \
 				'article-element article-element--paragraph':
-				body_str += p.text + '\n'
+				body_str += p.text + '\n\n'
 			else:
-				body_str += p.text.upper() + '\n'
+				body_str += p.text.upper() + '\n\n'
 		self.body = self.header.text + "\n\n" + body_str
 	
 	
-	def generate_article():
+	def generate_article(self):
 		return Article(self.title, self.date_tag.text, self.body)
 
 			

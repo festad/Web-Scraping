@@ -9,12 +9,13 @@ from PySide2.QtWidgets import (QApplication,
 	QTextBrowser, 
 	QScrollArea)
 import requests
+import requests_random_user_agent
 import sys
 import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--selenium', action='store_true', help='use selenium')
-parser.add_argument('-n', '--number_of_pages', type=int)
+parser.add_argument('-n', '--number-of-pages', type=int)
 args = parser.parse_args()
 
 if args.selenium:
@@ -68,7 +69,8 @@ def generate_pre_articles_bs4(npages):
 	pre_articles = []
 	for n in range(npages):
 		link = f'https://tvn24.pl/polska/{n+1}'
-		soup = BeautifulSoup(requests.get(link).text, 'lxml')
+		session = requests.Session()
+		soup = BeautifulSoup(session.get(link).text, 'lxml')
 		tags = soup.find_all('div',  attrs={'class':'teaser-wrapper'})
 		titles_links_tags = []
 		k = 1
@@ -97,7 +99,8 @@ def generate_pre_articles_bs4(npages):
 
 class ArticleScraper():
 	def __init__(self, link):
-		soup = BeautifulSoup(requests.get(link).text, 'lxml')
+		session = requests.Session()
+		soup = BeautifulSoup(session.get(link).text, 'lxml')
 		#driver.get(link)
 		
 		self.title = soup.find('div', attrs={'class':'article-story-header'}) \
@@ -181,7 +184,7 @@ class Article():
 class MainWindow(QMainWindow):
 	def __init__(self):
 		super().__init__()
-		self.setWindowTitle("PolskieRadio - PL")
+		self.setWindowTitle("TVN24 - Polska")
 		self.setGeometry(100, 100, 800, 600)
 		
 		self.scroll = QScrollArea()

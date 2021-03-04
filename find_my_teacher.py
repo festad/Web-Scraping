@@ -1,6 +1,6 @@
 import argparse
 from bs4 import BeautifulSoup
-from downloader import get_chrome_driver
+from downloader import get_firefox_driver
 from pathlib import Path
 import requests
 from selenium.webdriver.common.by import By
@@ -12,11 +12,11 @@ import sys
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-n', '--name', help='name of the lecturer (case sensitive)')
+parser.add_argument('name', help='name of the lecturer (case sensitive)')
 args = parser.parse_args()
 
 
-driver = get_chrome_driver(headless=True)
+driver = get_firefox_driver(headless=True)
 
 
 def find_lectures(teacher):
@@ -28,13 +28,16 @@ def find_lectures(teacher):
     
 
 def find_lectures_of_year(year, teacher):
-    driver.get(f'https://corsi.unibo.it/laurea/LingueLetteratureStraniere/orario-lezioni?anno={year}')
-    WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'button')))
-    for btn in driver.find_elements_by_tag_name('button'):
-        if 'month' in btn.get_attribute('class'):
-            month_btn = btn
+    url = f'https://corsi.unibo.it/laurea/LingueLetteratureStraniere/orario-lezioni?anno={year}'
+    print(url)
+    driver.get(url)
+    #WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'button')))
+    driver.implicitly_wait(20)
+    month_btn = driver.find_element_by_xpath( \
+        "//button[@type='button'][@class='fc-monthSwitch-button fc-button fc-state-default fc-corner-right']")
+    #print(len(month_btn))
     action_chain = ActionChains(driver)
-    action_chain.send_keys([Keys.ARROW_DOWN for i in range(15)])
+    action_chain.send_keys([Keys.ARROW_DOWN for i in range(10)])
     action_chain.move_to_element(month_btn)
     action_chain.click(month_btn)
     action_chain.perform()
@@ -52,10 +55,10 @@ def find_lectures_of_year(year, teacher):
 
 
 def main():
-    if args.name == None:
-        find_lectures('')
-    else:
-        find_lectures(args.name)
+   # if args.name == None:
+   #     find_lectures('')
+   # else:
+    find_lectures(args.name)
 
 
 if __name__ == '__main__':

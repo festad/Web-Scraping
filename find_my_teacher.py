@@ -9,14 +9,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import sys
-
+import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument('name', help='name of the lecturer (case sensitive)')
 args = parser.parse_args()
 
 
-driver = get_firefox_driver(headless=True)
+driver = get_firefox_driver()
 
 
 def find_lectures(teacher):
@@ -24,24 +24,26 @@ def find_lectures(teacher):
     for i in range(3):
         result += find_lectures_of_year(i+1, teacher)
     driver.quit()
-    print(result)
+    #print(result)
     
 
 def find_lectures_of_year(year, teacher):
     url = f'https://corsi.unibo.it/laurea/LingueLetteratureStraniere/orario-lezioni?anno={year}'
     print(url)
     driver.get(url)
-    #WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'button')))
-    driver.implicitly_wait(20)
-    month_btn = driver.find_element_by_xpath( \
-        "//button[@type='button'][@class='fc-monthSwitch-button fc-button fc-state-default fc-corner-right']")
+    #time.sleep(5)
+    WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'button')))
+    driver.execute_script("$('.fc-monthSwitch-button').click()")
+    #month_btn = driver.find_element_by_xpath( \
+    #    "//button[@type='button'][@class='fc-monthSwitch-button']")
     #print(len(month_btn))
-    action_chain = ActionChains(driver)
-    action_chain.send_keys([Keys.ARROW_DOWN for i in range(10)])
-    action_chain.move_to_element(month_btn)
-    action_chain.click(month_btn)
-    action_chain.perform()
+    #action_chain = ActionChains(driver)
+    #action_chain.send_keys([Keys.ARROW_DOWN for i in range(10)])
+    #action_chain.move_to_element(month_btn)
+    #action_chain.click(month_btn)
+    #action_chain.perform()
     WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.CLASS_NAME, 'fc-list-item')))
+    #driver.implicitly_wait(40)
     soup = BeautifulSoup(driver.page_source, 'lxml')
     print(f'Retrieving data for year {year}')
     result = ''
@@ -51,6 +53,7 @@ def find_lectures_of_year(year, teacher):
             hour = doc.parent.find_previous_sibling(attrs={'class':'time'}).text
             result += f'{doc.text[9:]} (year {year}) on {date_tag} at {hour}\n'
     result += '~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
+    print(result)
     return result
 
 

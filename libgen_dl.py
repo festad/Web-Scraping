@@ -1,10 +1,11 @@
-import re
-import sys
 import os
+import sys
 import time
 from pathlib import Path
-from downloader import get_soup, download_list_files
+
 from selenium import webdriver
+
+from downloader import get_soup
 
 
 def path_check():
@@ -28,10 +29,10 @@ def download_manga(hashcode, name, t=10):
     if name not in os.listdir():
         os.makedirs(name)
     # os.chdir(f'{name}')
-    driver_exe = str(Path.home()/Path('chromedriver_linux64', 'chromedriver'))
+    driver_exe = str(Path.home() / Path('chromedriver_linux64', 'chromedriver'))
     options = webdriver.ChromeOptions()
     options.add_experimental_option('prefs', {'download.default_directory': str(Path.home() / Path('Libgen', name))})
-    
+
     counter = 1
     for url in urls:
         driver = webdriver.Chrome(driver_exe, options=options)

@@ -36,3 +36,7 @@ class AnimeRanking:
         df.plot.bar(rot=75, color={'scores': 'red'})
         plt.tight_layout()
         plt.show()
+
+
+if __name__ == '__main__':
+    AnimeRanking()

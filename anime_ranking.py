@@ -8,10 +8,8 @@ class AnimeRanking:
 
     def __init__(self):
         self.anime_database = dict()
-        try:
-            self.load_anime_database()
-        except:
-            print('Problems while loading the database...')
+        self.load_anime_database()
+        self.plot_anime_ranking()
 
     def add_anime(self, anime_title, anime_score):
         self.anime_database[anime_title] = anime_score

@@ -1,6 +1,5 @@
 import json
 
-import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
@@ -36,6 +35,6 @@ class AnimeRanking:
         df = pd.DataFrame({'scores': anime_scores},
                           index=anime_titles)
         df = df.sort_values(by=['scores'], ascending=False)
-        df.plot.bar(rot=75,  color={'scores':'red'})
+        df.plot.bar(rot=75, color={'scores': 'red'})
         plt.tight_layout()
         plt.show()

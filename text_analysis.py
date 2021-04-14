@@ -61,7 +61,7 @@ class TextAnalyzer:
 
         n_elements = 50
         begin = 100
-        end = 400
+        end = 150
         df = df.sort_values(by=['occurrences'], ascending=False)[begin:end]
         df.plot.bar(rot=90, color={'occurrences': 'red'})
         plt.tight_layout()
@@ -70,4 +70,4 @@ class TextAnalyzer:
 
 if __name__ == '__main__':
     print('You need to have a source file to analyze though...')
-    TextAnalyzer(source='porro.txt')
+    TextAnalyzer(source='source.txt')

@@ -1,11 +1,14 @@
 {
-    "Death Note": 99.9,
-    "Monster": 99.7,
+    "Death Note": 1000.0,
+    "Monster": 990.0,
     "Death Parade": 70,
     "Great teacher Onizuka": 85,
     "High School DXD": 70,
     "Kakegurui": 83,
     "Sword Art Online": 10,
     "Anohana": 5,
-    "Another": 2
+    "Another": 0.1,
+    "Shingeki no Kyojin": 79,
+    "Kakegurui XX": 82,
+    "Discipline": 90
 }

@@ -36,7 +36,7 @@ def download_list_folders(list_folders):
         download_folder(folder)
 
 
-def download_folder(folder, mode='sequential'):
+def download_folder(folder, mode='concurrent'):
     folder_code = sha256(folder.encode('utf-8')).hexdigest()
     name = folder_code
     if name not in os.listdir():

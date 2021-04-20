@@ -1,5 +1,3 @@
-import argparse
-
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,22 +5,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from downloader import get_firefox_driver
 
-parser = argparse.ArgumentParser()
-parser.add_argument('name', help='name of the lecturer (case sensitive)')
-args = parser.parse_args()
-
-driver = get_firefox_driver()
-
 
 def find_lectures(teacher):
+    driver = get_firefox_driver()
     result = ''
     for i in range(3):
-        result += find_lectures_of_year(i + 1, teacher)
+        result += find_lectures_of_year(i + 1, teacher, driver)
     driver.quit()
     # print(result)
 
 
-def find_lectures_of_year(year, teacher):
+def find_lectures_of_year(year, teacher, driver):
     url = f'https://corsi.unibo.it/laurea/LingueLetteratureStraniere/orario-lezioni?anno={year}'
     print(url)
     driver.get(url)
@@ -52,11 +45,25 @@ def find_lectures_of_year(year, teacher):
     return result
 
 
+def execution():
+    print('Insert the name you want to look for,'
+          '\n  "E" to exit,'
+          '\n  "ALL" to find every name.')
+    query = input("-> ")
+    if query.lower() == 'e':
+        print('Exit...')
+        return 0
+    elif query.lower() == 'all':
+        find_lectures('')
+        return 1
+    else:
+        find_lectures(query)
+        return 1
+
+
 def main():
-    # if args.name == None:
-    #     find_lectures('')
-    # else:
-    find_lectures(args.name)
+    while execution():
+        print('OK')
 
 
 if __name__ == '__main__':

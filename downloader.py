@@ -1,3 +1,4 @@
+import os
 import re
 from pathlib import Path
 
@@ -20,7 +21,7 @@ def get_soup_with_random_session(url):
     return BeautifulSoup(session.get(url).text, 'lxml')
 
 
-def create_and_move_into_dir(name):
+def _create_and_move_into_dir(name):
     if name not in os.listdir():
         os.makedirs(name)
         os.chdir(name)

@@ -1,5 +1,9 @@
+import time
+
 from bs4 import BeautifulSoup
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -17,19 +21,19 @@ def find_lectures(teacher):
 
 def find_lectures_of_year(year, teacher, driver):
     url = f'https://corsi.unibo.it/laurea/LingueLetteratureStraniere/orario-lezioni?anno={year}'
-    print(url)
+    # print(url)
     driver.get(url)
-    # time.sleep(5)
+    time.sleep(2)
+    action_chain = ActionChains(driver)
+    action_chain.send_keys([Keys.ARROW_DOWN for i in range(10)])
+    action_chain.perform()
     WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'button')))
-    driver.execute_script("$('.fc-monthSwitch-button').click()")
-    # month_btn = driver.find_element_by_xpath( \
-    #    "//button[@type='button'][@class='fc-monthSwitch-button']")
-    # print(len(month_btn))
-    # action_chain = ActionChains(driver)
-    # action_chain.send_keys([Keys.ARROW_DOWN for i in range(10)])
-    # action_chain.move_to_element(month_btn)
-    # action_chain.click(month_btn)
-    # action_chain.perform()
+    # driver.execute_script("$('.fc-monthSwitch-button').click()")
+    btns = driver.find_elements_by_xpath("//div[@class='fc-button-group']/button")
+    for btn in btns:
+        if "month" in btn.get_attribute("class"):
+            btn.click()
+            break
     WebDriverWait(driver, 40).until(EC.presence_of_all_elements_located((By.CLASS_NAME, 'fc-list-item')))
     # driver.implicitly_wait(40)
     soup = BeautifulSoup(driver.page_source, 'lxml')

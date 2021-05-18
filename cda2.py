@@ -61,6 +61,7 @@ def download_folder(folder, mode='concurrent'):
 
 
 def sequential_download(video_tags):
+    print('=> sequential downloading...')
     for v in video_tags:
         video_url = 'https://www.cda.pl' + v.a['href']
         url_and_name = retrieve_video(video_url)

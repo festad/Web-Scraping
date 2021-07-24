@@ -10,7 +10,7 @@ def recursive_decryption(key, path):
             recursive_decryption(key, p.resolve().joinpath(el.name))
             print('<==')
         else:
-            if el.name != 'decrypter.py':
+            if el.name != 'decrypter.py' and el.name != 'encrypter.py':
                 print(f'decrypting {el.name} ...')
                 decrypt(key, el)
                 print(f'done!')

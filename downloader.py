@@ -1,5 +1,6 @@
 import os
 import re
+from hashlib import sha256
 from pathlib import Path
 
 import requests
@@ -58,6 +59,12 @@ def download_file(url, name):
     with open(f'{name}', 'wb') as f:
         for byte_chunk in r.iter_content(chunk_size=4096):
             f.write(byte_chunk)
+            
+
+def download_file_inside_path(url, name, path):
+    n = path/f'{name}'
+    print(n)
+    download_file(url, n)
 
 
 def download_list_files(urls, names):
@@ -99,3 +106,20 @@ def download_image(link, prefix, n):
     with open(namefile, 'wb') as f:
         for byte_chunk in r.iter_content(chunk_size=4096):
             f.write(byte_chunk)
+
+
+def insert_list_items():
+    list_items = []
+    print('Insert an item, Q to exit.')
+    while True:
+        link = input('-> ')
+        if link == 'Q':
+            print('Ok!')
+            return list_items
+        else:
+            list_items.append(link)
+    return list_items
+
+
+def hash(string):
+    return sha256(string.encode('utf-8')).hexdigest()

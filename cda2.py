@@ -92,7 +92,7 @@ def download_page(page_link):
 
 
 def retrieve_video(url, age=False):
-    driver = get_firefox_driver(headless=False)
+    driver = get_firefox_driver(headless=True)
     driver.get(url)
     if age:
         compile_form_for_age(driver)
@@ -143,7 +143,12 @@ def compile_form_for_age(driver):
     except:
         print("No minimum age needed...")
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    while True:
+        link = input('Insert the link to the folder\n-> ')
+        download_folder(link)
+        print('OK!')
+
 # path_check()
 # print(args.link)
 # download_page(args.link)

@@ -4,6 +4,7 @@ from hashlib import sha256
 from pathlib import Path
 
 import requests
+import requests_random_user_agent
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -56,6 +57,7 @@ def get_firefox_driver(headless=False):
 def download_file(url, name):
     r = requests.get(url, stream=True)
     # extension = url.split('.')[-1]
+    # print(r.json()['user-agent'])
     with open(f'{name}', 'wb') as f:
         for byte_chunk in r.iter_content(chunk_size=4096):
             f.write(byte_chunk)

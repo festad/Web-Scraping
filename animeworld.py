@@ -40,7 +40,7 @@ def main():
 
 
 def recovery_downloading():
-    for k in range(45):
+    for k in range(16, 45):
         k = k+1
         if k < 10:
             link = f'http://www.drstone.cloud/DDL/ANIME/Georgie/Georgie_Ep_0{k}_ITA.mp4'
@@ -48,7 +48,7 @@ def recovery_downloading():
             link = f'http://www.drstone.cloud/DDL/ANIME/Georgie/Georgie_Ep_{k}_ITA.mp4'
         try:
             print(f'Downloading [{k}/{45}]')
-            download_episode(ep_link=link, anime_name='Georgie', episode_number=k, path=Path(Path.home()/'Anime'/'Georgie'))
+            download_episode(ep_link=link, anime_name='Georgie', episode_number=k, path=Path(Path.home()/'Anime'/'G'))
             print('Done!')
         except:
             print(f'Error: {link}')

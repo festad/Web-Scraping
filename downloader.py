@@ -54,8 +54,8 @@ def get_firefox_driver(headless=False):
     return driver
 
 
-def download_file(url, name):
-    r = requests.get(url, stream=True)
+def download_file(url, name, headers={}):
+    r = requests.get(url, stream=True, headers=headers)
     # extension = url.split('.')[-1]
     # print(r.json()['user-agent'])
     with open(f'{name}', 'wb') as f:
@@ -63,10 +63,9 @@ def download_file(url, name):
             f.write(byte_chunk)
             
 
-def download_file_inside_path(url, name, path):
+def download_file_inside_path(url, name, path, headers={}):
     n = path/f'{name}'
-    print(n)
-    download_file(url, n)
+    download_file(url, n, headers)
 
 
 def download_list_files(urls, names):
@@ -108,6 +107,18 @@ def download_image(link, prefix, n):
     with open(namefile, 'wb') as f:
         for byte_chunk in r.iter_content(chunk_size=4096):
             f.write(byte_chunk)
+
+
+def get_item_name_in_serie(prefix, n):
+    n_str = f'{n}'
+    if len(n_str) == 1:
+        return f'{prefix}-000{n}.jpg'
+    elif len(n_str) == 2:
+        return f'{prefix}-00{n}.jpg'
+    elif len(n_str) == 3:
+        return f'{prefix}-0{n}.jpg'
+    else:
+        return f'{prefix}-{n}'
 
 
 def insert_list_items():

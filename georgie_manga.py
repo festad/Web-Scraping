@@ -1,28 +1,29 @@
 from pathlib import Path
 
-
 import requests
 import requests_random_user_agent
 
-from downloader import download_file_inside_path, normalize_number
+from downloader import normalize_number, download_file_inside_path
 
-headers = {'Referer':'https://mangakakalot.com/'}
+headers = {'Referer': 'https://mangakakalot.com/'}
 
 base_link = 'https://bu3.mkklcdnv6tempv3.com/mangakakalot/l1/lady_georgie/vol1_chapter_1/1.jpg'
 
-georgie = {1: [1,2,3,4,5,6,7],
-           2: [8,9,10,11,12,13],
-           3: [14,15,16,17,18,19,20,
-               21,22,23,24,25,26,27,28],
-           4: [29,30,31,32,33,34,35,36,37],
-           5: [38,39,40,41,42,43,44,45]}
+georgie = {1: [1, 2, 3, 4, 5, 6, 7],
+           2: [8, 9, 10, 11, 12, 13],
+           3: [14, 15, 16, 17, 18, 19, 20,
+               21, 22, 23, 24, 25, 26, 27, 28],
+           4: [29, 30, 31, 32, 33, 34, 35, 36, 37],
+           5: [38, 39, 40, 41, 42, 43, 44, 45]}
+
 
 def get_page(num_volume, num_chapter, num_page):
-    return f'https://bu3.mkklcdnv6tempv3.com/mangakakalot/l1/lady_georgie/vol{num_volume}_chapter_{num_chapter}/{num_page}.jpg'
+    return f'https://bu3.mkklcdnv6tempv3.com/mangakakalot/l1/lady_georgie/vol{num_volume}_chapter_{num_chapter}/{num_page}.jpg '
+
 
 def download_chapter(num_volume, num_chapter):
+    path = Path.home() / 'Manga' / 'Georgie' / f'volume_{num_volume}' / f'chapter_{num_chapter}'
     try:
-        path = Path.home() / 'Manga'/ 'Georgie'/ f'volume_{num_volume}' /f'chapter_{num_chapter}'
         Path.mkdir(path)
     except Exception as e:
         print(f'==> {e}')
@@ -34,7 +35,7 @@ def download_chapter(num_volume, num_chapter):
             if response.status_code == 200:
                 print(f'Downloading {link}')
                 download_file_inside_path(link, f'{normalize_number(num_page, 99)}.jpg',
-                                                     path, headers=headers)
+                                          path, headers=headers)
                 print('Done!')
             elif response.status_code == 404:
                 print(f'==> NOT FOUND: -> {link}')
@@ -48,10 +49,11 @@ def download_chapter(num_volume, num_chapter):
         finally:
             num_page += 1
 
+
 def download_volume(num_volume):
     print(f'Downloading volume {num_volume}')
+    path = Path.home() / 'Manga' / 'Georgie' / f'volume_{num_volume}'
     try:
-        path = Path.home() / 'Manga'/ 'Georgie'/ f'volume_{num_volume}'
         Path.mkdir(path)
     except Exception as e:
         print(f'==> {e}')
@@ -61,9 +63,10 @@ def download_volume(num_volume):
         print('Done!')
     print('Done!')
 
+
 def download_manga():
+    path = Path.home() / 'Manga' / 'Georgie'
     try:
-        path = Path.home() / 'Manga'/ 'Georgie'
         Path.mkdir(path)
     except Exception as e:
         print(f'==> {e}')

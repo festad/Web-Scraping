@@ -17,9 +17,12 @@ def recursive_decryption(key, path):
 
 
 def decrypt(key, path):
-    file_decrypter = FileDecrypter()
-    file_decrypter.Decrypt(path.resolve(), key)
-    file_decrypter.SaveTo(path.resolve())
+    try:
+        file_decrypter = FileDecrypter()
+        file_decrypter.Decrypt(path.resolve(), key)
+        file_decrypter.SaveTo(path.resolve())
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':

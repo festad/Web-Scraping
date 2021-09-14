@@ -17,9 +17,12 @@ def recursive_encryption(key, path):
 
 
 def encrypt(key, path):
-    file_encrypter = FileEncrypter()
-    file_encrypter.Encrypt(path.resolve(), key)
-    file_encrypter.SaveTo(path.resolve())
+    try:
+        file_encrypter = FileEncrypter()
+        file_encrypter.Encrypt(path.resolve(), key)
+        file_encrypter.SaveTo(path.resolve())
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
